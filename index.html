@@ -93,6 +93,13 @@
         linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
       background-size: 60px 60px;
     }
+    .hero-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      display: block;
+    }
     .hero-inner {
       position: relative; z-index: 1;
       display: grid;
@@ -660,6 +667,7 @@
   <!-- ═══ HERO ══════════════════════════════════════════════ -->
   <section id="hero">
     <div class="hero-bg"></div>
+    <canvas id="hero-3d" class="hero-canvas"></canvas>
     <div class="container">
       <div class="hero-inner">
 
@@ -708,11 +716,12 @@
       </div>
       <div class="about-card reveal">
         <p>
-          Backend is my happy place, frontend is my playground. I'm a <strong>3rd-year BS Information Technology
-          student</strong> at <strong>De La Salle Lipa</strong> with a startup mindset — I love building side projects,
-          learning by shipping, and turning "what if" into working software. With hands-on experience across the full
-          stack and exposure to international academic environments, I thrive on solving real-world problems through
-          clean, purposeful code. Right now I'm deepening my knowledge of <strong>system architecture and cloud
+          Backend is my happy place, frontend is my playground. I'm a <strong>4th-year BS Information Technology
+          student</strong> at <strong>De La Salle Lipa</strong> who ships complete systems, not just screens —
+          JWT-authenticated REST APIs, Supabase/Firebase backends with real-time data and row-level security,
+          role-based access control, and QR-driven workflows. I learn by shipping, turning "what if" into working
+          software, with hands-on experience across the full stack and exposure to international academic
+          environments. Right now I'm deepening my knowledge of <strong>system architecture and cloud
           services</strong>, aiming to build products that actually matter.
         </p>
       </div>
@@ -744,6 +753,10 @@
               <div class="skill-track"><div class="skill-fill" style="width:90%"></div></div>
             </div>
             <div>
+              <div class="skill-bar-header"><span class="skill-bar-name">TypeScript</span><span class="skill-level-badge">Intermediate</span></div>
+              <div class="skill-track"><div class="skill-fill" style="width:70%"></div></div>
+            </div>
+            <div>
               <div class="skill-bar-header"><span class="skill-bar-name">Java</span><span class="skill-level-badge">Intermediate</span></div>
               <div class="skill-track"><div class="skill-fill" style="width:62%"></div></div>
             </div>
@@ -766,8 +779,16 @@
               <div class="skill-track"><div class="skill-fill" style="width:93%"></div></div>
             </div>
             <div>
+              <div class="skill-bar-header"><span class="skill-bar-name">Tailwind CSS</span><span class="skill-level-badge">Intermediate</span></div>
+              <div class="skill-track"><div class="skill-fill" style="width:72%"></div></div>
+            </div>
+            <div>
+              <div class="skill-bar-header"><span class="skill-bar-name">Next.js</span><span class="skill-level-badge">Intermediate</span></div>
+              <div class="skill-track"><div class="skill-fill" style="width:68%"></div></div>
+            </div>
+            <div>
               <div class="skill-bar-header"><span class="skill-bar-name">React</span><span class="skill-level-badge">Intermediate</span></div>
-              <div class="skill-track"><div class="skill-fill" style="width:62%"></div></div>
+              <div class="skill-track"><div class="skill-fill" style="width:65%"></div></div>
             </div>
           </div>
         </div>
@@ -783,6 +804,10 @@
               <div class="skill-bar-header"><span class="skill-bar-name">Express.js</span><span class="skill-level-badge">Expert</span></div>
               <div class="skill-track"><div class="skill-fill" style="width:90%"></div></div>
             </div>
+            <div>
+              <div class="skill-bar-header"><span class="skill-bar-name">JWT &amp; Role-Based Access Control</span><span class="skill-level-badge">Intermediate</span></div>
+              <div class="skill-track"><div class="skill-fill" style="width:75%"></div></div>
+            </div>
           </div>
         </div>
 
@@ -794,8 +819,12 @@
               <div class="skill-track"><div class="skill-fill" style="width:92%"></div></div>
             </div>
             <div>
-              <div class="skill-bar-header"><span class="skill-bar-name">Supabase</span><span class="skill-level-badge">Intermediate</span></div>
-              <div class="skill-track"><div class="skill-fill" style="width:65%"></div></div>
+              <div class="skill-bar-header"><span class="skill-bar-name">Supabase (Realtime &amp; RLS)</span><span class="skill-level-badge">Intermediate</span></div>
+              <div class="skill-track"><div class="skill-fill" style="width:72%"></div></div>
+            </div>
+            <div>
+              <div class="skill-bar-header"><span class="skill-bar-name">Firebase (Auth &amp; Firestore)</span><span class="skill-level-badge">Intermediate</span></div>
+              <div class="skill-track"><div class="skill-fill" style="width:68%"></div></div>
             </div>
           </div>
         </div>
@@ -806,6 +835,10 @@
             <div>
               <div class="skill-bar-header"><span class="skill-bar-name">Git</span><span class="skill-level-badge">Expert</span></div>
               <div class="skill-track"><div class="skill-fill" style="width:92%"></div></div>
+            </div>
+            <div>
+              <div class="skill-bar-header"><span class="skill-bar-name">REST API Design</span><span class="skill-level-badge">Intermediate</span></div>
+              <div class="skill-track"><div class="skill-fill" style="width:78%"></div></div>
             </div>
             <div>
               <div class="skill-bar-header"><span class="skill-bar-name">Data Structures &amp; Algorithms</span><span class="skill-level-badge">Intermediate</span></div>
@@ -837,9 +870,9 @@
       <div class="learning-grid stagger">
 
         <div class="learn-card reveal">
-          <div class="learn-icon"><i class="fas fa-scroll"></i></div>
-          <h4>TypeScript</h4>
-          <p>Leveling up JavaScript with static typing for cleaner, more maintainable codebases and better IDE tooling.</p>
+          <div class="learn-icon"><i class="fas fa-cube"></i></div>
+          <h4>Three.js / WebGL</h4>
+          <p>Building interactive 3D scenes for the web — the hero background on this very site is my first hands-on project with it.</p>
           <span class="learn-status">In Progress</span>
         </div>
 
@@ -871,20 +904,19 @@
       <div class="projects-grid stagger">
 
         <div class="proj-card reveal">
-          <div class="proj-thumb" style="padding:0;overflow:hidden;">
-            <img src="ace-hardware-logo.webp" alt="ACE Hardware Logo" style="width:100%;height:100%;object-fit:cover;">
-          </div>
+          <div class="proj-thumb"><i class="fas fa-bag-shopping"></i></div>
           <div class="proj-body">
-            <h3>ACE Hardware E-Commerce Platform</h3>
-            <p>A full-featured e-commerce web application inspired by ACE Hardware. Supports product browsing, cart management, and order processing with a relational database backend.</p>
+            <h3>Shopaholichs</h3>
+            <p>A modular campus merchandise storefront and companion admin portal. Role-based access control, QR-verified order pickups, Cloudinary-powered media, and domain-gated access for @g.batstate-u.edu.ph students and faculty, with automated Firebase emulator unit tests.</p>
             <div class="tech-row">
-              <span class="tbadge">PHP</span>
-              <span class="tbadge">MySQL</span>
-              <span class="tbadge">HTML5</span>
-              <span class="tbadge">CSS3</span>
+              <span class="tbadge">JavaScript (ESM)</span>
+              <span class="tbadge">Vite</span>
+              <span class="tbadge">Firebase</span>
+              <span class="tbadge">Tailwind CSS</span>
             </div>
             <div class="proj-links">
-              <a href="https://github.com/haziaintsht" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+              <a href="https://github.com/shopaholichs/shopaholichs.github.io" target="_blank"><i class="fab fa-github"></i> Storefront</a>
+              <a href="https://github.com/shopaholichs/shopaholichs-admin.github.io" target="_blank"><i class="fas fa-user-shield"></i> Admin Portal</a>
             </div>
           </div>
         </div>
@@ -904,6 +936,23 @@
             </div>
             <div class="proj-links">
               <a href="https://github.com/haziaintsht" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card reveal">
+          <div class="proj-thumb"><i class="fas fa-mug-hot"></i></div>
+          <div class="proj-body">
+            <h3>Sip &amp; Savor Spot</h3>
+            <p>Full-stack coffee shop platform: public menu with a hidden secret menu, email-verified accounts, a real-time digital loyalty stamp card over Supabase Realtime, QR check-in, PDF receipts, and a role-gated admin portal — all backed by Postgres RLS policies.</p>
+            <div class="tech-row">
+              <span class="tbadge">Next.js</span>
+              <span class="tbadge">TypeScript</span>
+              <span class="tbadge">Supabase</span>
+              <span class="tbadge">Tailwind CSS</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://github.com/haziaintsht/Sip-SavorIbaan" target="_blank"><i class="fab fa-github"></i> GitHub</a>
             </div>
           </div>
         </div>
@@ -947,7 +996,7 @@
           <h4>Bachelor of Science in Information Technology</h4>
           <p class="tl-org"><i class="fas fa-university" style="color:var(--primary);margin-right:0.35rem"></i>De La Salle Lipa, Lipa City, Batangas</p>
           <p class="desc">
-            Currently in 3rd year, building a strong foundation in software development, data management,
+            Currently in 4th year, building a strong foundation in software development, data management,
             system architecture, and networking — with a focus on full-stack and backend engineering.
           </p>
         </div>
@@ -1054,10 +1103,10 @@
 
     /* ── Typing effect ────────────── */
     const roles = [
-      'Aspiring Backend Developer',
-      'Aspiring Data Analyst',
-      'Full-Stack Enthusiast',
-      'BS IT Student @ DLSL'
+      'Full-Stack Developer',
+      'Backend-Leaning Engineer',
+      'Systems-Minded Problem Solver',
+      '4th-Year BS IT @ DLSL'
     ];
     const typingEl = document.getElementById('typing');
     let ri = 0, ci = 0, deleting = false;
@@ -1088,6 +1137,116 @@
       { threshold: 0.12 }
     );
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── 3D tilt on hover (projects + certifications) ── */
+    function enableTilt(selector, maxTilt) {
+      document.querySelectorAll(selector).forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
+          const rotateX = (0.5 - y) * maxTilt;
+          const rotateY = (x - 0.5) * maxTilt;
+          card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      });
+    }
+    enableTilt('.proj-card', 9);
+    enableTilt('.cert-card', 7);
+  </script>
+
+  <!-- ═══ HERO 3D SCENE (Three.js) ════════════════════════════ -->
+  <script type="module">
+    try {
+      const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
+
+      const canvas = document.getElementById('hero-3d');
+      const heroSection = document.getElementById('hero');
+      if (!canvas || !heroSection) throw new Error('hero 3d mount points missing');
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
+      camera.position.z = 11;
+
+      const colorPrimary = 0x3b82f6;
+      const colorAccent  = 0x38bdf8;
+
+      const group = new THREE.Group();
+      scene.add(group);
+
+      const shapeDefs = [
+        { geo: new THREE.IcosahedronGeometry(1.6, 0),            color: colorPrimary, pos: [-3.4, 1.6, -2], wireframe: true  },
+        { geo: new THREE.TorusKnotGeometry(1, 0.32, 100, 16),    color: colorAccent,  pos: [3.6, -1.2, -4], wireframe: true  },
+        { geo: new THREE.OctahedronGeometry(1.1, 0),             color: colorPrimary, pos: [2.6, 2.4, -3],  wireframe: false },
+        { geo: new THREE.DodecahedronGeometry(0.9, 0),           color: colorAccent,  pos: [-3, -2, -3],    wireframe: false },
+      ];
+
+      const meshes = shapeDefs.map(def => {
+        const material = def.wireframe
+          ? new THREE.MeshBasicMaterial({ color: def.color, wireframe: true, transparent: true, opacity: 0.55 })
+          : new THREE.MeshStandardMaterial({ color: def.color, transparent: true, opacity: 0.22, roughness: 0.4, metalness: 0.2 });
+        const mesh = new THREE.Mesh(def.geo, material);
+        mesh.position.set(...def.pos);
+        group.add(mesh);
+        return mesh;
+      });
+
+      scene.add(new THREE.AmbientLight(colorAccent, 0.4));
+      const pointLight = new THREE.PointLight(colorPrimary, 2, 20);
+      pointLight.position.set(5, 5, 5);
+      scene.add(pointLight);
+
+      const particleCount = 220;
+      const positions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount; i++) {
+        positions[i * 3]     = (Math.random() - 0.5) * 24;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 14 - 4;
+      }
+      const particleGeo = new THREE.BufferGeometry();
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const particles = new THREE.Points(
+        particleGeo,
+        new THREE.PointsMaterial({ color: colorAccent, size: 0.045, transparent: true, opacity: 0.6 })
+      );
+      scene.add(particles);
+
+      let targetRotX = 0, targetRotY = 0;
+      window.addEventListener('pointermove', (e) => {
+        targetRotY = ((e.clientX / window.innerWidth) * 2 - 1) * 0.3;
+        targetRotX = ((e.clientY / window.innerHeight) * 2 - 1) * 0.2;
+      });
+
+      function resize() {
+        const rect = heroSection.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(rect.width, rect.height, false);
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const clock = new THREE.Clock();
+      function animate() {
+        const t = clock.getElapsedTime();
+        meshes.forEach((m, i) => {
+          m.rotation.x = t * (0.08 + i * 0.015);
+          m.rotation.y = t * (0.1 + i * 0.012);
+        });
+        particles.rotation.y = t * 0.02;
+        group.rotation.y += (targetRotY - group.rotation.y) * 0.04;
+        group.rotation.x += (targetRotX - group.rotation.x) * 0.04;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+    } catch (err) {
+      console.warn('Hero 3D scene disabled:', err);
+    }
   </script>
 </body>
 </html>
