@@ -158,6 +158,21 @@
     .btn-solid:hover { opacity: 0.85; text-decoration: none; box-shadow: 0 10px 20px rgba(0,0,0,0.25); }
     .btn-outline { background: transparent; color: var(--text); border-color: var(--card-border); }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+    .btn-disabled {
+      color: var(--muted);
+      cursor: not-allowed;
+      opacity: 0.55;
+      font-family: inherit;
+    }
+    .btn-disabled:hover { border-color: var(--card-border); color: var(--muted); transform: none; }
+    .soon-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      padding: 0.1rem 0.35rem;
+      margin-left: 0.2rem;
+    }
     .theme-toggle {
       width: 54px; height: 29px;
       border: 1px solid var(--card-border);
@@ -408,6 +423,26 @@
     .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .reveal.visible { opacity: 1; transform: none; }
 
+    /* ── SCROLL TO TOP ─────────────────────────── */
+    .to-top {
+      position: fixed;
+      right: 1.5rem; bottom: 1.5rem;
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      color: var(--accent);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s, visibility 0.3s, border-color 0.25s;
+      z-index: 50;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+    }
+    .to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .to-top:hover { border-color: var(--accent); }
+
     /* ── RESPONSIVE ──────────────────────────── */
     @media (max-width: 860px) {
       .grid-2col { grid-template-columns: 1fr; }
@@ -444,6 +479,7 @@
           <div class="hero-actions">
             <a href="#projects" class="btn btn-solid">VIEW PROJECTS</a>
             <a href="mailto:jhayvy0419@gmail.com" class="btn btn-outline">EMAIL ME</a>
+            <button class="btn btn-outline btn-disabled" disabled title="Resume coming soon">RESUME <span class="soon-tag">SOON</span></button>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"><span class="toggle-knob"><i class="fas fa-moon"></i></span></button>
           </div>
         </div>
@@ -731,6 +767,8 @@
     &copy; <span id="yr"></span> Jhay-Vy R. Adajar | Personal Portfolio
   </footer>
 
+  <button id="to-top" class="to-top" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></button>
+
   <script>
     /* ── Boot sequence ─────────────── */
     (function boot() {
@@ -897,7 +935,16 @@
         btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
       });
     }
-    magnetize('.btn', 10);
+    magnetize('.btn:not(:disabled)', 10);
+
+    /* ── Scroll to top ─────────────── */
+    const toTopBtn = document.getElementById('to-top');
+    if (toTopBtn) {
+      window.addEventListener('scroll', () => {
+        toTopBtn.classList.toggle('visible', window.scrollY > 600);
+      });
+      toTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
   </script>
 
 </body>
