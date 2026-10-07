@@ -218,58 +218,96 @@
     /* ── DEVICE MOCKUP (laptop + phone) ───────── */
     .device-mockup {
       position: relative;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 1.9rem 1.5rem 1.6rem;
-      background: radial-gradient(ellipse at 50% 20%, var(--accent-dim), transparent 65%), var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2.25rem 2rem 2rem;
+      background: var(--bg2);
       border-right: 1px solid var(--card-border);
       overflow: hidden;
+      min-height: 230px;
     }
+    .laptop-wrap { width: 68%; max-width: 250px; }
     .laptop {
-      width: 100%; max-width: 300px;
-      background: linear-gradient(160deg, #2b2b2b, #111);
-      border-radius: 9px 9px 3px 3px;
-      padding: 8px 8px 11px;
-      box-shadow: 0 18px 34px rgba(0,0,0,0.4);
+      width: 100%;
+      border: 7px solid #161616;
+      border-radius: 13px;
+      background: #000;
+      box-shadow: 0 2px 0 rgba(255,255,255,0.04) inset, 0 20px 36px rgba(0,0,0,0.4);
     }
     .laptop-screen {
       width: 100%; aspect-ratio: 16 / 10.5;
       overflow: hidden;
-      border-radius: 2px;
+      border-radius: 6px;
       background: #000;
     }
     .laptop-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
     .laptop-base {
-      width: 112%;
-      margin: 0 0 0 -6%;
-      height: 11px;
-      background: linear-gradient(180deg, #3a3a3a, #141414);
-      border-radius: 0 0 7px 7px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.35);
+      position: relative;
+      width: 128%;
+      margin: 0 0 0 -14%;
+      height: 13px;
+      background: linear-gradient(180deg, #2c2c2c, #0d0d0d);
+      border-radius: 0 0 9px 9px;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.4);
     }
+    .laptop-base::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 16%; height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 0 0 5px 5px;
+    }
+    .laptop-dots {
+      position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 4px;
+    }
+    .laptop-dots span { width: 2.5px; height: 2.5px; border-radius: 50%; background: rgba(255,255,255,0.22); }
     .phone {
       position: absolute;
-      right: 10%; bottom: 10%;
-      width: 72px;
-      background: #0d0d0d;
-      border: 2px solid #000;
-      border-radius: 13px;
-      padding: 5px;
-      box-shadow: 0 14px 28px rgba(0,0,0,0.45);
+      top: 16%; right: 9%;
+      width: 27%; max-width: 88px;
+      border: 5px solid #161616;
+      border-radius: 18px;
+      background: #000;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.5);
+      z-index: 2;
+    }
+    .phone-notch {
+      position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+      width: 14px; height: 3px; border-radius: 3px;
+      background: #161616;
+      z-index: 2;
     }
     .phone-screen {
-      width: 100%; aspect-ratio: 9 / 19;
+      width: 100%; aspect-ratio: 9 / 19.5;
       overflow: hidden;
-      border-radius: 8px;
+      border-radius: 11px;
       background: #000;
+      position: relative;
     }
     .phone-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
     /* ── GITHUB CONTRIBUTIONS ─────────────────── */
+    .ghchart-box { border: 1px solid var(--card-border); padding: 1.25rem; }
     .ghchart-wrap { overflow-x: auto; }
     .ghchart-wrap img { display: block; min-width: 640px; }
+    .ghchart-foot {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+      margin-top: 1rem;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .ghchart-legend { display: flex; align-items: center; gap: 0.4rem; }
+    .ghchart-legend .sw { width: 11px; height: 11px; display: inline-block; }
 
     /* ── FOOTER GRID (certs / socials / contact) */
     .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 1.5rem; }
+    .cert-scroll {
+      max-height: 230px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+    .cert-scroll::-webkit-scrollbar { width: 6px; }
+    .cert-scroll::-webkit-scrollbar-track { background: transparent; }
+    .cert-scroll::-webkit-scrollbar-thumb { background: var(--card-border); }
     .cert-row {
       display: flex; align-items: center; justify-content: space-between; gap: 1rem;
       padding: 0.85rem 0;
@@ -454,12 +492,15 @@
 
         <article class="proj reveal">
           <div class="device-mockup">
-            <div class="laptop">
-              <div class="laptop-screen"><img src="project-shopaholichs.png" alt="Shopaholichs on desktop"></div>
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-shopaholichs.png" alt="Shopaholichs on desktop"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
-            <div class="laptop-base"></div>
             <div class="phone">
-              <div class="phone-screen"><img src="project-shopaholichs.png" alt="Shopaholichs on mobile"></div>
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-shopaholichs-mobile.png" alt="Shopaholichs on mobile"></div>
             </div>
           </div>
           <div class="proj-body">
@@ -478,12 +519,15 @@
 
         <article class="proj reveal">
           <div class="device-mockup">
-            <div class="laptop">
-              <div class="laptop-screen"><img src="project-palengkehub.png" alt="PalengkeHub on desktop"></div>
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-palengkehub.png" alt="PalengkeHub on desktop"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
-            <div class="laptop-base"></div>
             <div class="phone">
-              <div class="phone-screen"><img src="project-palengkehub.png" alt="PalengkeHub on mobile"></div>
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-palengkehub-mobile.png" alt="PalengkeHub on mobile"></div>
             </div>
           </div>
           <div class="proj-body">
@@ -502,12 +546,15 @@
 
         <article class="proj reveal">
           <div class="device-mockup">
-            <div class="laptop">
-              <div class="laptop-screen"><img src="project-sipsavor.png" alt="Sip & Savor Spot on desktop"></div>
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-sipsavor.png" alt="Sip & Savor Spot on desktop"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
-            <div class="laptop-base"></div>
             <div class="phone">
-              <div class="phone-screen"><img src="project-sipsavor.png" alt="Sip & Savor Spot on mobile"></div>
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-sipsavor-mobile.png" alt="Sip & Savor Spot on mobile"></div>
             </div>
           </div>
           <div class="proj-body">
@@ -536,13 +583,27 @@
           <h2>GitHub Contributions</h2>
           <a href="https://github.com/haziaintsht" target="_blank">View GitHub Profile ↗</a>
         </div>
-        <div class="ghchart-wrap">
-          <img src="https://ghchart.rshah.org/f97316/haziaintsht" alt="Jhay-Vy's GitHub contribution graph">
+        <div class="ghchart-box">
+          <div class="ghchart-wrap">
+            <img src="https://ghchart.rshah.org/f97316/haziaintsht" alt="Jhay-Vy's GitHub contribution graph">
+          </div>
+          <div class="ghchart-foot">
+            <span>227 contributions in the last year</span>
+            <span class="ghchart-legend">
+              Less
+              <span class="sw" style="background:rgba(249,115,22,0.08);"></span>
+              <span class="sw" style="background:rgba(249,115,22,0.35);"></span>
+              <span class="sw" style="background:rgba(249,115,22,0.6);"></span>
+              <span class="sw" style="background:rgba(249,115,22,0.85);"></span>
+              <span class="sw" style="background:#f97316;"></span>
+              More
+            </span>
+          </div>
         </div>
       </div>
     </section>
 
-    <div class="divider"><span class="line"></span>CREDENTIALS | CONNECT<span class="line"></span></div>
+    <div class="divider"><span class="line"></span>RECOGNITION | SOCIALS<span class="line"></span></div>
 
     <!-- ═══ CERTIFICATIONS / SOCIALS / CONTACT ═══ -->
     <section class="container">
@@ -550,29 +611,31 @@
 
         <div class="panel reveal">
           <div class="panel-head"><h2>Certifications</h2></div>
-          <div class="cert-row">
-            <div><p class="cert-name">S2S Academy Achievement Certificate</p><p class="cert-issuer">S2S Academy</p></div>
-            <a href="S2SAcademy-achievement-certificate.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
-          </div>
-          <div class="cert-row">
-            <div><p class="cert-name">Cyber Threat Management</p><p class="cert-issuer">Cisco Networking Academy</p></div>
-            <a href="CyberThreatManagementUpdate20260307-31-ojhawa.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
-          </div>
-          <div class="cert-row">
-            <div><p class="cert-name">Python Essentials 1</p><p class="cert-issuer">Cisco Networking Academy</p></div>
-            <a href="PythonEssentials1Update20260307-31-59gcjp.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
-          </div>
-          <div class="cert-row">
-            <div><p class="cert-name">Python Essentials 2</p><p class="cert-issuer">Cisco Networking Academy</p></div>
-            <a href="PythonEssentials2Update20260321-31-55ecbs.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
-          </div>
-          <div class="cert-row">
-            <div><p class="cert-name">Innovative Research Horizons 2026</p><p class="cert-issuer">Certificate of Participation</p></div>
-            <a href="JHAY-VY%20REAL%20ADAJAR%20-%20Certificate%20of%20Participation%20(Innovative%20Research%20Horizons%202026).pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
-          </div>
-          <div class="cert-row">
-            <div><p class="cert-name">Immersion Programme 2026</p><p class="cert-issuer">Universiti Teknologi PETRONAS (UTP)</p></div>
-            <a href="utp-immersion-certificate.png" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
+          <div class="cert-scroll">
+            <div class="cert-row">
+              <div><p class="cert-name">S2S Academy Achievement Certificate</p><p class="cert-issuer">S2S Academy</p></div>
+              <a href="S2SAcademy-achievement-certificate.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
+            </div>
+            <div class="cert-row">
+              <div><p class="cert-name">Cyber Threat Management</p><p class="cert-issuer">Cisco Networking Academy</p></div>
+              <a href="CyberThreatManagementUpdate20260307-31-ojhawa.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
+            </div>
+            <div class="cert-row">
+              <div><p class="cert-name">Python Essentials 1</p><p class="cert-issuer">Cisco Networking Academy</p></div>
+              <a href="PythonEssentials1Update20260307-31-59gcjp.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
+            </div>
+            <div class="cert-row">
+              <div><p class="cert-name">Python Essentials 2</p><p class="cert-issuer">Cisco Networking Academy</p></div>
+              <a href="PythonEssentials2Update20260321-31-55ecbs.pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
+            </div>
+            <div class="cert-row">
+              <div><p class="cert-name">Innovative Research Horizons 2026</p><p class="cert-issuer">Certificate of Participation</p></div>
+              <a href="JHAY-VY%20REAL%20ADAJAR%20-%20Certificate%20of%20Participation%20(Innovative%20Research%20Horizons%202026).pdf" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
+            </div>
+            <div class="cert-row">
+              <div><p class="cert-name">Immersion Programme 2026</p><p class="cert-issuer">Universiti Teknologi PETRONAS (UTP)</p></div>
+              <a href="utp-immersion-certificate.png" target="_blank"><i class="fas fa-up-right-from-square"></i></a>
+            </div>
           </div>
         </div>
 
