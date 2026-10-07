@@ -408,16 +408,30 @@
 
     /* ── CERTIFICATIONS ──────────────────────── */
     #certifications { background: var(--bg); }
-    .certs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    .certs-marquee {
+      overflow: hidden;
+      width: 100%;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+              mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    }
+    .certs-track {
+      display: flex;
+      width: max-content;
       gap: 1.25rem;
+      animation: certs-scroll 32s linear infinite;
+    }
+    .certs-marquee:hover .certs-track { animation-play-state: paused; }
+    @keyframes certs-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
     .cert-card {
       background: var(--card);
       border: 1px solid var(--card-border);
       border-radius: 14px;
       padding: 1.6rem;
+      width: 260px;
+      flex-shrink: 0;
       display: flex; flex-direction: column; gap: 0.75rem;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
       color: var(--text);
@@ -532,7 +546,7 @@
     }
     @media (max-width: 480px) {
       .skills-grid { grid-template-columns: 1fr 1fr; }
-      .certs-grid { grid-template-columns: 1fr; }
+      .cert-card { width: 220px; }
     }
 
     /* ── INTERN BADGE ────────────────────────────────────────── */
@@ -940,50 +954,52 @@
         <p class="sec-label">My Credentials</p>
         <h2 class="sec-title"><span class="line">Certifications</span></h2>
       </div>
-      <div class="certs-grid stagger">
+      <div class="certs-marquee reveal">
+        <div class="certs-track" id="certs-track">
 
-        <a class="cert-card reveal" href="S2SAcademy-achievement-certificate.pdf" target="_blank">
-          <div class="cert-icon"><i class="fas fa-trophy"></i></div>
-          <h4>S2S Academy Achievement Certificate</h4>
-          <span class="cert-issuer">S2S Academy</span>
-          <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
-        </a>
+          <a class="cert-card" href="S2SAcademy-achievement-certificate.pdf" target="_blank">
+            <div class="cert-icon"><i class="fas fa-trophy"></i></div>
+            <h4>S2S Academy Achievement Certificate</h4>
+            <span class="cert-issuer">S2S Academy</span>
+            <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
+          </a>
 
-        <a class="cert-card reveal" href="CyberThreatManagementUpdate20260307-31-ojhawa.pdf" target="_blank">
-          <div class="cert-icon"><i class="fas fa-shield-alt"></i></div>
-          <h4>Cyber Threat Management</h4>
-          <span class="cert-issuer">Cisco Networking Academy</span>
-          <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
-        </a>
+          <a class="cert-card" href="CyberThreatManagementUpdate20260307-31-ojhawa.pdf" target="_blank">
+            <div class="cert-icon"><i class="fas fa-shield-alt"></i></div>
+            <h4>Cyber Threat Management</h4>
+            <span class="cert-issuer">Cisco Networking Academy</span>
+            <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
+          </a>
 
-        <a class="cert-card reveal" href="PythonEssentials1Update20260307-31-59gcjp.pdf" target="_blank">
-          <div class="cert-icon"><i class="fab fa-python"></i></div>
-          <h4>Python Essentials 1</h4>
-          <span class="cert-issuer">Cisco Networking Academy</span>
-          <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
-        </a>
+          <a class="cert-card" href="PythonEssentials1Update20260307-31-59gcjp.pdf" target="_blank">
+            <div class="cert-icon"><i class="fab fa-python"></i></div>
+            <h4>Python Essentials 1</h4>
+            <span class="cert-issuer">Cisco Networking Academy</span>
+            <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
+          </a>
 
-        <a class="cert-card reveal" href="PythonEssentials2Update20260321-31-55ecbs.pdf" target="_blank">
-          <div class="cert-icon"><i class="fab fa-python"></i></div>
-          <h4>Python Essentials 2</h4>
-          <span class="cert-issuer">Cisco Networking Academy</span>
-          <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
-        </a>
+          <a class="cert-card" href="PythonEssentials2Update20260321-31-55ecbs.pdf" target="_blank">
+            <div class="cert-icon"><i class="fab fa-python"></i></div>
+            <h4>Python Essentials 2</h4>
+            <span class="cert-issuer">Cisco Networking Academy</span>
+            <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
+          </a>
 
-        <a class="cert-card reveal" href="JHAY-VY%20REAL%20ADAJAR%20-%20Certificate%20of%20Participation%20(Innovative%20Research%20Horizons%202026).pdf" target="_blank">
-          <div class="cert-icon"><i class="fas fa-flask"></i></div>
-          <h4>Certificate of Participation — Innovative Research Horizons 2026</h4>
-          <span class="cert-issuer">Innovative Research Horizons 2026</span>
-          <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
-        </a>
+          <a class="cert-card" href="JHAY-VY%20REAL%20ADAJAR%20-%20Certificate%20of%20Participation%20(Innovative%20Research%20Horizons%202026).pdf" target="_blank">
+            <div class="cert-icon"><i class="fas fa-flask"></i></div>
+            <h4>Certificate of Participation — Innovative Research Horizons 2026</h4>
+            <span class="cert-issuer">Innovative Research Horizons 2026</span>
+            <span class="cert-cta"><i class="fas fa-file-pdf"></i> View Certificate</span>
+          </a>
 
-        <a class="cert-card reveal" href="utp-immersion-certificate.png" target="_blank">
-          <div class="cert-icon"><i class="fas fa-earth-asia"></i></div>
-          <h4>Certificate of Participation — Immersion Programme 2026</h4>
-          <span class="cert-issuer">Universiti Teknologi PETRONAS (UTP)</span>
-          <span class="cert-cta"><i class="fas fa-image"></i> View Certificate</span>
-        </a>
+          <a class="cert-card" href="utp-immersion-certificate.png" target="_blank">
+            <div class="cert-icon"><i class="fas fa-earth-asia"></i></div>
+            <h4>Certificate of Participation — Immersion Programme 2026</h4>
+            <span class="cert-issuer">Universiti Teknologi PETRONAS (UTP)</span>
+            <span class="cert-cta"><i class="fas fa-image"></i> View Certificate</span>
+          </a>
 
+        </div>
       </div>
     </div>
   </section>
@@ -1088,6 +1104,10 @@
         card.addEventListener('mouseleave', () => { card.style.transform = ''; });
       });
     }
+    /* ── Certifications marquee: duplicate cards for a seamless loop ── */
+    const certsTrack = document.getElementById('certs-track');
+    if (certsTrack) certsTrack.innerHTML += certsTrack.innerHTML;
+
     enableTilt('.proj-card', 9);
     enableTilt('.cert-card', 7);
   </script>
