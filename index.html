@@ -186,9 +186,11 @@
       gap: 1.5rem 2rem;
     }
     .stack-label {
+      display: flex; align-items: center; gap: 0.7rem;
       font-size: 0.65rem; letter-spacing: 1.5px; color: var(--muted);
       margin-bottom: 0.6rem; font-weight: 700;
     }
+    .stack-label::after { content: ''; flex: 1; height: 1px; background: var(--card-border); }
     .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
     .tag {
       font-size: 0.72rem; font-weight: 500;
@@ -428,7 +430,10 @@
           </div>
           <div class="stack-group">
             <p class="stack-label">SECURITY</p>
-            <div class="tags"><span class="tag">JWT</span><span class="tag">Role-Based Access Control</span></div>
+            <div class="tags">
+              <span class="tag">JWT</span><span class="tag">Role-Based Access Control</span>
+              <span class="tag">bcrypt</span><span class="tag">OAuth</span><span class="tag">Auth0</span>
+            </div>
           </div>
           <div class="stack-group">
             <p class="stack-label">TOOLS</p>
