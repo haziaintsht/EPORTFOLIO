@@ -35,6 +35,17 @@
     }
 
     html { scroll-behavior: smooth; }
+
+    /* ── Theme ripple transition ─────────────── */
+    ::view-transition-old(root) { animation: none; }
+    ::view-transition-new(root) {
+      animation: ripple-reveal 0.7s ease-in-out;
+      z-index: 9999;
+    }
+    @keyframes ripple-reveal {
+      0%   { clip-path: circle(0px at var(--ripple-x) var(--ripple-y)); }
+      100% { clip-path: circle(var(--ripple-radius) at var(--ripple-x) var(--ripple-y)); }
+    }
     body {
       font-family: 'JetBrains Mono', 'Courier New', monospace;
       background: var(--bg);
@@ -785,10 +796,30 @@
     try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
     applyTheme(savedTheme === 'light' ? 'light' : 'dark');
 
-    themeBtn.addEventListener('click', () => {
+    themeBtn.addEventListener('click', (e) => {
       const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      applyTheme(next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
+
+      if (!document.startViewTransition) {
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch (err) {}
+        return;
+      }
+
+      const rect = themeBtn.getBoundingClientRect();
+      const x = e.clientX || (rect.left + rect.width / 2);
+      const y = e.clientY || (rect.top + rect.height / 2);
+      const radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      );
+      root.style.setProperty('--ripple-x', x + 'px');
+      root.style.setProperty('--ripple-y', y + 'px');
+      root.style.setProperty('--ripple-radius', radius + 'px');
+
+      document.startViewTransition(() => {
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch (err) {}
+      });
     });
 
     /* ── Footer year ──────────────── */
