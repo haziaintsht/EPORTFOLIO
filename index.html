@@ -100,13 +100,7 @@
     .divider .line { flex: 1; max-width: 220px; height: 1px; background: var(--card-border); }
 
     /* ── HERO ────────────────────────────────── */
-    .hero { padding: 1rem 0 2rem; position: relative; }
-    .hero-canvas {
-      position: fixed; inset: 0;
-      width: 100vw; height: 100vh;
-      z-index: -1;
-      pointer-events: none;
-    }
+    .hero { padding: 1rem 0 2rem; }
     .hero-grid {
       display: grid;
       grid-template-columns: 220px 1fr;
@@ -441,7 +435,6 @@
 
     <!-- ═══ HERO ═══ -->
     <section class="hero container">
-      <canvas id="hero-3d" class="hero-canvas"></canvas>
       <div class="hero-grid">
         <img class="hero-photo" src="profile-photo.png" alt="Jhay-Vy R. Adajar">
         <div class="hero-info">
@@ -907,88 +900,5 @@
     magnetize('.btn', 10);
   </script>
 
-  <!-- ═══ HERO 3D SCENE (Three.js) ════════════════════════════ -->
-  <script type="module">
-    try {
-      const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
-
-      const canvas = document.getElementById('hero-3d');
-      if (!canvas) throw new Error('hero 3d mount point missing');
-
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-      camera.position.z = 14;
-
-      const green = 0x22c55e;
-
-      const group = new THREE.Group();
-      scene.add(group);
-
-      const shapeDefs = [
-        { geo: new THREE.IcosahedronGeometry(1.9, 0),   pos: [5.5, 3.2, -3],  opacity: 0.4  },
-        { geo: new THREE.OctahedronGeometry(1.2, 0),     pos: [-5.8, -2.4, -4], opacity: 0.32 },
-        { geo: new THREE.DodecahedronGeometry(1.1, 0),   pos: [-4.6, 4.2, -5], opacity: 0.3  },
-        { geo: new THREE.TorusKnotGeometry(0.9, 0.26, 90, 14), pos: [6.2, -3.6, -6], opacity: 0.28 },
-        { geo: new THREE.IcosahedronGeometry(1, 0),      pos: [0.5, -5.5, -5], opacity: 0.26 },
-      ];
-      const shapes = shapeDefs.map(def => {
-        const mesh = new THREE.Mesh(
-          def.geo,
-          new THREE.MeshBasicMaterial({ color: green, wireframe: true, transparent: true, opacity: def.opacity })
-        );
-        mesh.position.set(...def.pos);
-        group.add(mesh);
-        return mesh;
-      });
-
-      const particleCount = 320;
-      const positions = new Float32Array(particleCount * 3);
-      for (let i = 0; i < particleCount; i++) {
-        positions[i * 3]     = (Math.random() - 0.5) * 34;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 22;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 16 - 4;
-      }
-      const particleGeo = new THREE.BufferGeometry();
-      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      const particles = new THREE.Points(
-        particleGeo,
-        new THREE.PointsMaterial({ color: green, size: 0.04, transparent: true, opacity: 0.5 })
-      );
-      scene.add(particles);
-
-      let targetRotX = 0, targetRotY = 0;
-      window.addEventListener('pointermove', (e) => {
-        targetRotY = (e.clientX / window.innerWidth * 2 - 1) * 0.2;
-        targetRotX = (e.clientY / window.innerHeight * 2 - 1) * 0.14;
-      });
-
-      function resize() {
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(window.innerWidth, window.innerHeight, false);
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      const clock = new THREE.Clock();
-      function animate() {
-        const t = clock.getElapsedTime();
-        shapes.forEach((m, i) => {
-          m.rotation.x = t * (0.06 + i * 0.012);
-          m.rotation.y = t * (0.08 + i * 0.01);
-        });
-        particles.rotation.y = t * 0.01;
-        group.rotation.y += (targetRotY - group.rotation.y) * 0.04;
-        group.rotation.x += (targetRotX - group.rotation.x) * 0.04;
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-      animate();
-    } catch (err) {
-      console.warn('Hero 3D scene disabled:', err);
-    }
-  </script>
 </body>
 </html>
