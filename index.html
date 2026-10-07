@@ -91,9 +91,9 @@
     /* ── HERO ────────────────────────────────── */
     .hero { padding: 1rem 0 2rem; position: relative; }
     .hero-canvas {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
+      position: fixed; inset: 0;
+      width: 100vw; height: 100vh;
+      z-index: -1;
       pointer-events: none;
     }
     .hero-grid {
@@ -101,8 +101,6 @@
       grid-template-columns: 220px 1fr;
       gap: 2.5rem;
       align-items: center;
-      position: relative;
-      z-index: 1;
     }
     .hero-photo {
       width: 220px; height: 220px;
@@ -873,61 +871,60 @@
       const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
 
       const canvas = document.getElementById('hero-3d');
-      const heroSection = document.querySelector('.hero');
-      if (!canvas || !heroSection) throw new Error('hero 3d mount points missing');
+      if (!canvas) throw new Error('hero 3d mount point missing');
 
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-      camera.position.z = 10;
+      camera.position.z = 14;
 
       const green = 0x22c55e;
 
       const group = new THREE.Group();
       scene.add(group);
 
-      const icosa = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(1.9, 0),
-        new THREE.MeshBasicMaterial({ color: green, wireframe: true, transparent: true, opacity: 0.4 })
-      );
-      icosa.position.set(2.8, 0.6, -2);
-      group.add(icosa);
+      const shapeDefs = [
+        { geo: new THREE.IcosahedronGeometry(1.9, 0),   pos: [5.5, 3.2, -3],  opacity: 0.4  },
+        { geo: new THREE.OctahedronGeometry(1.2, 0),     pos: [-5.8, -2.4, -4], opacity: 0.32 },
+        { geo: new THREE.DodecahedronGeometry(1.1, 0),   pos: [-4.6, 4.2, -5], opacity: 0.3  },
+        { geo: new THREE.TorusKnotGeometry(0.9, 0.26, 90, 14), pos: [6.2, -3.6, -6], opacity: 0.28 },
+        { geo: new THREE.IcosahedronGeometry(1, 0),      pos: [0.5, -5.5, -5], opacity: 0.26 },
+      ];
+      const shapes = shapeDefs.map(def => {
+        const mesh = new THREE.Mesh(
+          def.geo,
+          new THREE.MeshBasicMaterial({ color: green, wireframe: true, transparent: true, opacity: def.opacity })
+        );
+        mesh.position.set(...def.pos);
+        group.add(mesh);
+        return mesh;
+      });
 
-      const octa = new THREE.Mesh(
-        new THREE.OctahedronGeometry(1, 0),
-        new THREE.MeshBasicMaterial({ color: green, wireframe: true, transparent: true, opacity: 0.3 })
-      );
-      octa.position.set(-2.6, -1, -3);
-      group.add(octa);
-
-      const particleCount = 140;
+      const particleCount = 320;
       const positions = new Float32Array(particleCount * 3);
       for (let i = 0; i < particleCount; i++) {
-        positions[i * 3]     = (Math.random() - 0.5) * 16;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 8 - 2;
+        positions[i * 3]     = (Math.random() - 0.5) * 34;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 22;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 16 - 4;
       }
       const particleGeo = new THREE.BufferGeometry();
       particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       const particles = new THREE.Points(
         particleGeo,
-        new THREE.PointsMaterial({ color: green, size: 0.035, transparent: true, opacity: 0.5 })
+        new THREE.PointsMaterial({ color: green, size: 0.04, transparent: true, opacity: 0.5 })
       );
       scene.add(particles);
 
       let targetRotX = 0, targetRotY = 0;
-      heroSection.addEventListener('pointermove', (e) => {
-        const rect = heroSection.getBoundingClientRect();
-        targetRotY = ((e.clientX - rect.left) / rect.width * 2 - 1) * 0.25;
-        targetRotX = ((e.clientY - rect.top) / rect.height * 2 - 1) * 0.18;
+      window.addEventListener('pointermove', (e) => {
+        targetRotY = (e.clientX / window.innerWidth * 2 - 1) * 0.2;
+        targetRotX = (e.clientY / window.innerHeight * 2 - 1) * 0.14;
       });
 
       function resize() {
-        const rect = heroSection.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) return;
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setSize(rect.width, rect.height, false);
-        camera.aspect = rect.width / rect.height;
+        renderer.setSize(window.innerWidth, window.innerHeight, false);
+        camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
       }
       window.addEventListener('resize', resize);
@@ -936,11 +933,11 @@
       const clock = new THREE.Clock();
       function animate() {
         const t = clock.getElapsedTime();
-        icosa.rotation.x = t * 0.1;
-        icosa.rotation.y = t * 0.14;
-        octa.rotation.x = t * 0.16;
-        octa.rotation.y = t * 0.1;
-        particles.rotation.y = t * 0.015;
+        shapes.forEach((m, i) => {
+          m.rotation.x = t * (0.06 + i * 0.012);
+          m.rotation.y = t * (0.08 + i * 0.01);
+        });
+        particles.rotation.y = t * 0.01;
         group.rotation.y += (targetRotY - group.rotation.y) * 0.04;
         group.rotation.x += (targetRotX - group.rotation.x) * 0.04;
         renderer.render(scene, camera);
