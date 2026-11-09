@@ -264,7 +264,12 @@
 
     /* ── PROJECTS ────────────────────────────── */
     .section-title { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 1.5rem; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .section-head .section-title { margin-bottom: 0; }
+    .section-count { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
     .proj-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .proj-list:not(.show-all) .proj-extra { display: none; }
+    .proj-more { display: flex; justify-content: center; margin-top: 1.5rem; }
     .proj {
       background: var(--card);
       border: 1px solid var(--card-border);
@@ -278,6 +283,7 @@
     .proj-body { padding: 1.75rem; display: flex; flex-direction: column; gap: 0.8rem; }
     .proj-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
     .proj-body p { font-size: 0.85rem; color: var(--muted); }
+    .proj-body .proj-meta { font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text); opacity: 0.7; margin-top: -0.45rem; }
     .proj-links { display: flex; gap: 0.5rem; align-items: center; font-size: 0.8rem; font-weight: 600; margin-top: auto; flex-wrap: wrap; }
     .proj-links span { color: var(--muted); }
 
@@ -354,9 +360,34 @@
     .phone-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
     /* ── GITHUB CONTRIBUTIONS ─────────────────── */
-    .ghchart-box { border: 1px solid var(--card-border); padding: 1.25rem; }
+    .ghchart-box {
+      border: 1px solid var(--card-border); padding: 1.25rem;
+      --gh-0: rgba(34,197,94,0.08); --gh-1: rgba(34,197,94,0.35); --gh-2: rgba(34,197,94,0.6);
+      --gh-3: rgba(34,197,94,0.85); --gh-4: #22c55e;
+    }
+    :root[data-theme="light"] .ghchart-box {
+      --gh-0: rgba(21,128,61,0.09); --gh-1: rgba(21,128,61,0.3); --gh-2: rgba(21,128,61,0.55);
+      --gh-3: rgba(21,128,61,0.8); --gh-4: #15803d;
+    }
     .ghchart-wrap { overflow-x: auto; }
     .ghchart-wrap img { display: block; width: 100%; height: auto; min-width: 640px; }
+    .gh-layout { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem 2.5rem; }
+    .gh-graph { flex: 0 1 auto; min-width: 0; max-width: 100%; }
+    .gh-grid { display: grid; gap: 4px; width: max-content; max-width: 100%; }
+    .gh-month, .gh-day { font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+    .gh-month { padding-bottom: 4px; }
+    /* zero-height label box so the text never makes its row taller than the squares */
+    .gh-day { align-self: center; height: 0; display: flex; align-items: center; padding-right: 6px; }
+    .gh-cell { width: 100%; aspect-ratio: 1; align-self: start; border-radius: 3px; background: var(--gh-0); transition: background 0.4s, outline-color 0.2s; outline: 1px solid transparent; outline-offset: 1px; }
+    .gh-cell:hover { outline-color: var(--text); }
+    .gh-cell.l1 { background: var(--gh-1); } .gh-cell.l2 { background: var(--gh-2); }
+    .gh-cell.l3 { background: var(--gh-3); } .gh-cell.l4 { background: var(--gh-4); }
+    .gh-stats { flex: 1 1 260px; max-width: 400px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+    .gh-stats[hidden] { display: none; }
+    .gh-unit { font-size: 0.7rem; font-weight: 600; color: var(--muted); }
+    .gh-stat { border: 1px solid var(--card-border); padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 0.2rem; }
+    .gh-stat-num { font-size: 1.45rem; font-weight: 700; color: var(--accent); line-height: 1.1; }
+    .gh-stat-label { font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
     .ghchart-foot {
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
       margin-top: 1rem;
@@ -464,7 +495,7 @@
           <div class="hero-actions">
             <a href="#projects" class="btn btn-solid">VIEW PROJECTS</a>
             <a href="mailto:jhayvy0419@gmail.com" class="btn btn-outline">EMAIL ME</a>
-            <a href="Jhay-Vy-Adajar-Resume.pdf" target="_blank" class="btn btn-outline">RESUME</a>
+            <a href="Jhay-Vy-Adajar-Resume.pdf" target="_blank" rel="noopener" class="btn btn-outline">RESUME</a>
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"><span class="toggle-knob"><i class="fas fa-moon"></i></span></button>
           </div>
         </div>
@@ -518,9 +549,9 @@
 
           <div class="panel about reveal">
             <div class="panel-head"><h2>About</h2></div>
-            <p>Backend is my home turf; frontend is where I like to experiment. I'm a 4th-year BS Information Technology student at De La Salle Lipa, drawn to building systems that work end-to-end — authenticated APIs, live data, and access control done right.</p>
-            <p>I pick things up by building them. Shopaholichs, Sip &amp; Savor Spot, and PalengkeHub are all real, working products — not tutorial clones. I run into problems, dig into why, and keep pushing until it clicks.</p>
-            <p>I'm currently looking for an internship or part-time opportunity to put what I've taught myself into practice, while continuing to sharpen my understanding of system design and cloud infrastructure.</p>
+            <p>I'm a full-stack developer and a 4th-year BS Information Technology student, majoring in System Development, at De La Salle Lipa. My strength is the backend: secure authentication, real-time data, and role-based access control built to hold up in production.</p>
+            <p>I founded DevA², a two-person development studio that designs, builds, and maintains live web and mobile systems. Across studio, capstone, and personal work, I've built ten projects, ranging from storefronts and admin portals to a real-time ward communication system.</p>
+            <p>I'm currently seeking a 486-hour software development or full-stack OJT starting December 2026, where I can contribute to production work while deepening my expertise in system design and cloud infrastructure.</p>
           </div>
 
         </div>
@@ -578,8 +609,11 @@
 
     <!-- ═══ PROJECTS ═══ -->
     <section class="container" id="projects">
-      <h2 class="section-title">Featured Projects</h2>
-      <div class="proj-list">
+      <div class="section-head">
+        <h2 class="section-title">Featured Projects</h2>
+        <span class="section-count">10 PROJECTS · 5 CLIENT BUILDS</span>
+      </div>
+      <div class="proj-list" id="proj-list">
 
         <article class="proj reveal">
           <div class="device-mockup">
@@ -596,7 +630,8 @@
           </div>
           <div class="proj-body">
             <h3>Shopaholichs</h3>
-            <p>A modular campus merchandise storefront and companion admin portal. Role-based access control, QR-verified order pickups, Cloudinary-powered media, and domain-gated access for @g.batstate-u.edu.ph students and faculty, with automated Firebase emulator unit tests.</p>
+            <p class="proj-meta">Client project</p>
+            <p>A modular campus merchandise storefront and companion admin portal. Role-based access control, QR-verified order pickups, Cloudinary-powered media, and sign-in limited to university accounts, with automated Firebase emulator unit tests.</p>
             <div class="tags">
               <span class="tag">JavaScript (ESM)</span><span class="tag">Vite</span><span class="tag">Firebase</span><span class="tag">Tailwind CSS</span>
             </div>
@@ -612,25 +647,26 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-sipsavor.png" alt="Sip & Savor Spot on desktop"></div>
+                <div class="laptop-screen"><img src="project-devasq-nfc.webp" alt="DevA² Smart NFC Cards on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
             <div class="phone">
               <div class="phone-notch"></div>
-              <div class="phone-screen"><img src="project-sipsavor-mobile.png" alt="Sip & Savor Spot on mobile"></div>
+              <div class="phone-screen"><img src="project-devasq-nfc-mobile.webp" alt="DevA² Smart NFC Cards on mobile" loading="lazy"></div>
             </div>
           </div>
           <div class="proj-body">
-            <h3>Sip &amp; Savor Spot</h3>
-            <p>Full-stack coffee shop platform: public menu with a hidden secret menu, email-verified accounts, a real-time digital loyalty stamp card over Supabase Realtime, QR check-in, PDF receipts, and a role-gated admin portal — all backed by Postgres RLS policies.</p>
+            <h3>DevA² Smart NFC Cards</h3>
+            <p class="proj-meta">Studio product · DevA²</p>
+            <p>Turns physical NFC cards into live, editable profiles with QR fallback, one-tap vCard save, and scan analytics by day and device. An admin console batch-generates up to 1,000 cards, writes them to tags with Web NFC, and exports QR codes as a ZIP — secured with bcrypt, signed sessions, and Cloudflare Turnstile.</p>
             <div class="tags">
-              <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Supabase</span><span class="tag">Tailwind CSS</span>
+              <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Firebase</span><span class="tag">Tailwind CSS</span><span class="tag">Vercel</span>
             </div>
             <div class="proj-links">
-              <a href="https://sip-savor-spot.vercel.app/" target="_blank">View Project ↗</a>
+              <a href="https://nfc.devasq.site/" target="_blank">View Platform ↗</a>
               <span>|</span>
-              <a href="https://github.com/haziaintsht/Sip-SavorIbaan" target="_blank">View Code ↗</a>
+              <a href="https://devasq.site/" target="_blank">DevA² Studio ↗</a>
             </div>
           </div>
         </article>
@@ -650,18 +686,214 @@
           </div>
           <div class="proj-body">
             <h3>PalengkeHub</h3>
-            <p>A mobile-first marketplace connecting local wet market vendors and buyers in Lipa City. Real-time product listings, vendor management, and a Supabase-powered backend for seamless data sync.</p>
+            <p class="proj-meta">Capstone · Project Manager &amp; Full-Stack Developer</p>
+            <p>Online ordering for the Lipa City Public Market: an Android app and a React admin dashboard with per-kilo price comparison across stalls, a multi-stall cart, GCash checkout, and scheduled pickup at the vendor's stall. Led the 4-person team and designed the Supabase schema for prices, inventories, and orders.</p>
             <div class="tags">
-              <span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">JavaScript</span><span class="tag">Supabase</span>
+              <span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">React</span><span class="tag">Supabase</span><span class="tag">Cloudflare</span>
             </div>
             <div class="proj-links">
               <a href="https://www.palengkehub.site/" target="_blank">View Project ↗</a>
+              <span>|</span>
+              <a href="https://admin.palengkehub.site/admin-login" target="_blank">View Admin ↗</a>
               <span>|</span>
               <a href="https://github.com/haziaintsht" target="_blank">View Code ↗</a>
             </div>
           </div>
         </article>
 
+        <article class="proj reveal">
+          <div class="device-mockup">
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-nursebeacon.webp" alt="NurseBeacon ward dashboard on desktop" loading="lazy"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
+            </div>
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-nursebeacon-mobile.webp" alt="NurseBeacon + Reassure on mobile" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3>NurseBeacon + Reassure</h3>
+            <p class="proj-meta">Client project</p>
+            <p>A ward communication system from one Flutter codebase: a patient bedside tablet (Reassure), a nurse badge (NurseBeacon), and a ward admin dashboard. Supabase Realtime puts a patient's request on the nurse's badge instantly, and PostgreSQL triggers log response times — covered by 29 unit tests.</p>
+            <div class="tags">
+              <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span><span class="tag">Netlify</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://reassurexbeacon.netlify.app/lpu/" target="_blank">View App ↗</a>
+              <span>|</span>
+              <a href="https://reassurexbeacon.netlify.app/" target="_blank">View Dashboard ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj reveal proj-extra">
+          <div class="device-mockup">
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-yslapb.webp" alt="YslaPB on desktop" loading="lazy"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
+            </div>
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-yslapb-mobile.webp" alt="YslaPB on mobile" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3>YslaPB</h3>
+            <p class="proj-meta">Personal project</p>
+            <p>A Korean-style photo booth in the browser with 15 live filters, 60 frames, and 113 stickers. Up to 6 friends on separate phones shoot one strip together in real time through Firestore transactions, and MediaPipe swaps backgrounds without uploading a single photo. Exports to PNG, GIF, Instagram Story, and print.</p>
+            <div class="tags">
+              <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Firebase</span><span class="tag">MediaPipe</span><span class="tag">Cloudinary</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://yslapbebu.netlify.app/" target="_blank">View Project ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj reveal proj-extra">
+          <div class="device-mockup">
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-thelathe.webp" alt="The LATHE on desktop" loading="lazy"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
+            </div>
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-thelathe-mobile.webp" alt="The LATHE on mobile" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3>The LATHE</h3>
+            <p class="proj-meta">Client project · In development</p>
+            <p>The digital home for the campus's official student publication, which has published news and literary work since 1966 — a public news site, a literary folio, and an admin portal for the editorial team.</p>
+            <div class="tags">
+              <span class="tag">JavaScript</span><span class="tag">Vite</span><span class="tag">Firebase</span><span class="tag">Vercel</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://thelathepublic.vercel.app/" target="_blank">View Site ↗</a>
+              <span>|</span>
+              <a href="https://thelathepublic.vercel.app/folio" target="_blank">View Folio ↗</a>
+              <span>|</span>
+              <a href="https://thelatheadmin.vercel.app/" target="_blank">View Admin ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj reveal proj-extra">
+          <div class="device-mockup">
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-sipsavor.png" alt="Sip & Savor Spot on desktop" loading="lazy"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
+            </div>
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-sipsavor-mobile.png" alt="Sip & Savor Spot on mobile" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3>Sip &amp; Savor Spot</h3>
+            <p class="proj-meta">Web application</p>
+            <p>Full-stack coffee shop platform: public menu with a hidden secret menu, email-verified accounts, a real-time digital loyalty stamp card over Supabase Realtime, QR check-in, PDF receipts, and a role-gated admin portal — all backed by Postgres RLS policies.</p>
+            <div class="tags">
+              <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Supabase</span><span class="tag">Tailwind CSS</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://sip-savor-spot.vercel.app/" target="_blank">View Project ↗</a>
+              <span>|</span>
+              <a href="https://github.com/haziaintsht/Sip-SavorIbaan" target="_blank">View Code ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj reveal proj-extra">
+          <div class="device-mockup">
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-fedelicious.webp" alt="Fedelicious Wings POS on desktop" loading="lazy"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
+            </div>
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-fedelicious-mobile.webp" alt="Fedelicious Wings POS on mobile" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3>Fedelicious Wings POS</h3>
+            <p class="proj-meta">Client project</p>
+            <p>A role-based point-of-sale system for a wings restaurant, with separate admin, cashier, and kitchen views, live order updates from cashier to kitchen, staff time tracking and payroll, sales analytics, and receipt generation.</p>
+            <div class="tags">
+              <span class="tag">Next.js</span><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Supabase</span><span class="tag">Tailwind CSS</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://fedelicious-wings-pos.onrender.com/login" target="_blank">View Staff Login ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj reveal proj-extra">
+          <div class="device-mockup">
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-nursereset.webp" alt="NurseReset on desktop" loading="lazy"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
+            </div>
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-nursereset-mobile.webp" alt="NurseReset on mobile" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3>NurseReset</h3>
+            <p class="proj-meta">Client project</p>
+            <p>A no-sign-up wellness and study companion for student and working nurses: a guided breathing pacer, Pomodoro study timer, hydration and wellness trackers, and duty checklists. All data stays on the device, with the Web Audio, Wake Lock, and Vibration APIs for session cues.</p>
+            <div class="tags">
+              <span class="tag">HTML5</span><span class="tag">JavaScript</span><span class="tag">Tailwind CSS</span><span class="tag">Netlify</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://nursereset.netlify.app/" target="_blank">View Project ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="proj reveal proj-extra">
+          <div class="device-mockup">
+            <div class="laptop-wrap">
+              <div class="laptop">
+                <div class="laptop-screen"><img src="project-tutoring.webp" alt="Peer Tutoring Booking Platform on desktop" loading="lazy"></div>
+              </div>
+              <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
+            </div>
+            <div class="phone">
+              <div class="phone-notch"></div>
+              <div class="phone-screen"><img src="project-tutoring-mobile.webp" alt="Peer Tutoring Booking Platform on mobile" loading="lazy"></div>
+            </div>
+          </div>
+          <div class="proj-body">
+            <h3>Peer Tutoring Booking Platform</h3>
+            <p class="proj-meta">Course project · IT Elective 4</p>
+            <p>Students browse and book sessions with peer tutors and get an AI-generated study plan from Google Gemini. A typed Express REST API with JWT auth, Zod validation, and rate limiting backs a React 19 frontend, and GitHub Actions CI lints, tests, and builds both apps on every push.</p>
+            <div class="tags">
+              <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Express</span><span class="tag">MongoDB</span><span class="tag">Gemini API</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://itelect4-project-sigma.vercel.app/" target="_blank">View Project ↗</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+      <div class="proj-more">
+        <button type="button" id="proj-toggle" class="btn btn-outline" aria-controls="proj-list" aria-expanded="false">SHOW ALL 10 PROJECTS</button>
       </div>
     </section>
 
@@ -675,18 +907,27 @@
           <a href="https://github.com/haziaintsht" target="_blank">View GitHub Profile ↗</a>
         </div>
         <div class="ghchart-box">
-          <div class="ghchart-wrap">
-            <img src="https://ghchart.rshah.org/22c55e/haziaintsht" alt="Jhay-Vy's GitHub contribution graph">
+          <div class="gh-layout">
+            <!-- Grid is drawn by the script below from live GitHub data (falls back to the full-year image) -->
+            <div class="gh-graph" id="gh-graph">
+              <div class="gh-grid" id="gh-grid" role="img" aria-label="GitHub contributions since August 2026"></div>
+            </div>
+            <div class="gh-stats" id="gh-stats">
+              <div class="gh-stat"><span class="gh-stat-num" id="gh-count">0</span><span class="gh-stat-label">Contributions</span></div>
+              <div class="gh-stat"><span class="gh-stat-num" id="gh-active">0</span><span class="gh-stat-label">Active days</span></div>
+              <div class="gh-stat"><span class="gh-stat-num" id="gh-best">0</span><span class="gh-stat-label" id="gh-best-label">Best day</span></div>
+              <div class="gh-stat"><span class="gh-stat-num"><span id="gh-streak">0</span><span class="gh-unit"> days</span></span><span class="gh-stat-label">Longest streak</span></div>
+            </div>
           </div>
           <div class="ghchart-foot">
-            <span><span id="gh-count">0</span> contributions in the last year</span>
+            <span id="gh-range">Since August 2026 · live from GitHub</span>
             <span class="ghchart-legend">
               Less
-              <span class="sw" style="background:rgba(34,197,94,0.08);"></span>
-              <span class="sw" style="background:rgba(34,197,94,0.35);"></span>
-              <span class="sw" style="background:rgba(34,197,94,0.6);"></span>
-              <span class="sw" style="background:rgba(34,197,94,0.85);"></span>
-              <span class="sw" style="background:#22c55e;"></span>
+              <span class="sw" style="background:var(--gh-0);"></span>
+              <span class="sw" style="background:var(--gh-1);"></span>
+              <span class="sw" style="background:var(--gh-2);"></span>
+              <span class="sw" style="background:var(--gh-3);"></span>
+              <span class="sw" style="background:var(--gh-4);"></span>
               More
             </span>
           </div>
@@ -865,26 +1106,93 @@
     }
     if (roleTextEl) tickRole();
 
-    /* ── GitHub contributions count-up ────── */
-    const ghCountEl = document.getElementById('gh-count');
-    if (ghCountEl) {
-      const target = 227;
-      function animateCount(duration) {
-        const start = performance.now();
-        function step(now) {
-          const p = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - p, 3);
-          ghCountEl.textContent = Math.round(eased * target);
-          if (p < 1) requestAnimationFrame(step);
+    /* ── GitHub contributions (zoomed: August 2026 onwards) ────── */
+    const ghGrid = document.getElementById('gh-grid');
+    if (ghGrid) {
+      const GH_USER = 'haziaintsht';
+      const DAY = 86400000;
+      const iso = ms => new Date(ms).toISOString().slice(0, 10);
+      const now = new Date();
+      const todayMs = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      // Start on Aug 1 2026; the data source only covers the last 12 months, so never go further back than that
+      const startMs = Math.max(Date.UTC(2026, 7, 1), todayMs - 364 * DAY);
+      const startDow = new Date(startMs).getUTCDay();   // 0 = Sunday, like GitHub's grid
+      const days = [];
+      for (let ms = startMs; ms <= todayMs; ms += DAY) days.push(ms);
+      const weeks = Math.floor((days.length - 1 + startDow) / 7) + 1;
+      ghGrid.style.gridTemplateColumns = `auto repeat(${weeks}, minmax(0, 24px))`;
+
+      // Day labels (Mon / Wed / Fri) in the first column
+      [['Mon', 1], ['Wed', 3], ['Fri', 5]].forEach(([label, dow]) => {
+        const el = document.createElement('span');
+        el.className = 'gh-day'; el.textContent = label;
+        el.style.gridColumn = '1'; el.style.gridRow = String(dow + 2);
+        ghGrid.appendChild(el);
+      });
+
+      // One square per day (drawn empty first so the panel doesn't jump while data loads)
+      const cells = days.map((ms, i) => {
+        const d = new Date(ms);
+        const col = Math.floor((i + startDow) / 7) + 2;
+        if (d.getUTCDate() === 1 || i === 0) {   // month label above the week holding the 1st
+          const m = document.createElement('span');
+          m.className = 'gh-month';
+          m.textContent = d.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' });
+          m.style.gridColumn = `${col} / span 3`; m.style.gridRow = '1';
+          ghGrid.appendChild(m);
         }
-        requestAnimationFrame(step);
+        const c = document.createElement('span');
+        c.className = 'gh-cell';
+        c.style.gridColumn = String(col); c.style.gridRow = String(d.getUTCDay() + 2);
+        ghGrid.appendChild(c);
+        return c;
+      });
+
+      const fmtDay = ms => new Date(ms).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+      function countUp(el, target, duration) {
+        const t0 = performance.now();
+        (function step(t) {
+          const p = Math.min((t - t0) / duration, 1);
+          el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+          if (p < 1) requestAnimationFrame(step);
+        })(t0);
       }
-      const ghObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) { animateCount(1200); obs.disconnect(); }
+
+      const ctrl = new AbortController();
+      setTimeout(() => ctrl.abort(), 10000);
+      fetch(`https://github-contributions-api.jogruber.de/v4/${GH_USER}?y=last`, { signal: ctrl.signal })
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(data => {
+          const byDate = new Map(data.contributions.map(c => [c.date, c]));
+          let total = 0, active = 0, run = 0, longest = 0, best = { count: 0, ms: null };
+          days.forEach((ms, i) => {
+            const c = byDate.get(iso(ms)) || { count: 0, level: 0 };
+            cells[i].classList.add('l' + c.level);
+            cells[i].title = `${c.count || 'No'} contribution${c.count === 1 ? '' : 's'} on ${fmtDay(ms)}`;
+            total += c.count;
+            if (c.count > 0) { active++; run++; longest = Math.max(longest, run); } else run = 0;
+            if (c.count > best.count) best = { count: c.count, ms };
+          });
+          ghGrid.setAttribute('aria-label', `${total} GitHub contributions since ${fmtDay(startMs)}`);
+          if (best.ms) document.getElementById('gh-best-label').textContent = 'Best day · ' +
+            new Date(best.ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+          const stats = [['gh-count', total], ['gh-active', active], ['gh-best', best.count], ['gh-streak', longest]];
+          // Count the numbers up once the panel scrolls into view
+          new IntersectionObserver((entries, obs) => {
+            if (entries.some(e => e.isIntersecting)) {
+              stats.forEach(([id, n]) => countUp(document.getElementById(id), n, 1200));
+              obs.disconnect();
+            }
+          }, { threshold: 0.3 }).observe(ghGrid);
+        })
+        .catch(() => {
+          // Data service unavailable: fall back to the full-year image chart
+          document.getElementById('gh-graph').innerHTML =
+            `<div class="ghchart-wrap"><img src="https://ghchart.rshah.org/22c55e/${GH_USER}" alt="Jhay-Vy's GitHub contribution graph"></div>`;
+          document.getElementById('gh-graph').style.flex = '1 1 100%';
+          document.getElementById('gh-stats').hidden = true;
+          document.getElementById('gh-range').textContent = 'Last 12 months';
         });
-      }, { threshold: 0.3 });
-      ghObserver.observe(ghCountEl);
     }
 
     /* ── 3D tilt + cursor spotlight on cards ── */
@@ -921,6 +1229,20 @@
       });
     }
     magnetize('.btn:not(:disabled)', 10);
+
+    /* ── Show all / fewer projects ── */
+    const projList = document.getElementById('proj-list');
+    const projToggle = document.getElementById('proj-toggle');
+    if (projList && projToggle) {
+      const total = projList.querySelectorAll('.proj').length;
+      projToggle.addEventListener('click', () => {
+        const expanded = projList.classList.toggle('show-all');
+        projToggle.setAttribute('aria-expanded', String(expanded));
+        projToggle.textContent = expanded ? 'SHOW FEWER PROJECTS' : `SHOW ALL ${total} PROJECTS`;
+        // When collapsing, bring the section back into view so the reader isn't left far below it
+        if (!expanded) document.getElementById('projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
 
     /* ── Scroll to top ─────────────── */
     const toTopBtn = document.getElementById('to-top');
