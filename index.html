@@ -20,6 +20,10 @@
       --text:         #f5f5f5;
       --muted:        #9ca3af;
       --accent-ring:  rgba(34,197,94,0.45);
+      /* spacing scale */
+      --space-gap: 2rem;        /* between panels and cards */
+      --space-pad: 2.25rem;     /* inside panels and cards */
+      --space-section: 4.5rem;  /* above and below section dividers */
     }
     :root[data-theme="light"] {
       --bg:           #fafafa;
@@ -80,7 +84,7 @@
     /* ── TOP LABEL ───────────────────────────── */
     .top-label {
       display: flex; align-items: center; justify-content: center; gap: 1rem;
-      padding: 1.25rem 1rem;
+      padding: 1.75rem 1rem;
       font-size: 0.7rem;
       letter-spacing: 2px;
       color: var(--accent);
@@ -91,7 +95,7 @@
     /* ── SECTION DIVIDER ─────────────────────── */
     .divider {
       display: flex; align-items: center; justify-content: center; gap: 1rem;
-      padding: 2.5rem 1rem;
+      padding: var(--space-section) 1rem;
       font-size: 0.68rem;
       letter-spacing: 2.5px;
       color: var(--accent);
@@ -100,11 +104,11 @@
     .divider .line { flex: 1; max-width: 220px; height: 1px; background: var(--card-border); }
 
     /* ── HERO ────────────────────────────────── */
-    .hero { padding: 1rem 0 2rem; }
+    .hero { padding: 2rem 0 1rem; }
     .hero-grid {
       display: grid;
       grid-template-columns: 220px 1fr;
-      gap: 2.5rem;
+      gap: 3rem;
       align-items: center;
     }
     .hero-photo {
@@ -186,20 +190,20 @@
     .grid-2col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
+      gap: var(--space-gap);
+      margin-bottom: var(--space-gap);
     }
-    .col-left, .col-right { display: flex; flex-direction: column; gap: 1.5rem; }
+    .col-left, .col-right { display: flex; flex-direction: column; gap: var(--space-gap); }
     .panel {
       background: var(--card);
       border: 1px solid var(--card-border);
-      padding: 1.75rem;
+      padding: var(--space-pad);
       transition: border-color 0.3s, transform 0.15s ease-out, background 0.15s;
     }
     .panel:hover { border-color: var(--accent-border); }
     .panel-head {
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.75rem;
     }
     .panel-head h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.5px; }
     .panel-head .panel-tag { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
@@ -211,7 +215,7 @@
       content: ''; position: absolute; left: 4px; top: 6px; bottom: 6px;
       width: 1px; background: var(--card-border);
     }
-    .tl-row { position: relative; margin-bottom: 1.5rem; }
+    .tl-row { position: relative; margin-bottom: 1.75rem; }
     .tl-row:last-child { margin-bottom: 0; }
     .dot {
       position: absolute; left: -1.4rem; top: 0.3rem;
@@ -219,6 +223,7 @@
       background: var(--bg); border: 2px solid var(--muted);
     }
     .dot-active { background: var(--accent); border-color: var(--accent); animation: dot-pulse 2s ease-in-out infinite; }
+    .dot-done { background: var(--accent); border-color: var(--accent); }
     @keyframes dot-pulse {
       0%   { box-shadow: 0 0 0 0 var(--accent-ring); }
       70%  { box-shadow: 0 0 0 6px transparent; }
@@ -236,14 +241,14 @@
     }
 
     /* ── ABOUT ───────────────────────────────── */
-    .panel.about p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; }
+    .panel.about p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem; }
     .panel.about p:last-child { margin-bottom: 0; }
 
     /* ── TECH STACK ──────────────────────────── */
     .stack-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 1.5rem 2rem;
+      gap: 1.75rem 2.5rem;
     }
     .stack-label {
       display: flex; align-items: center; gap: 0.7rem;
@@ -264,12 +269,12 @@
 
     /* ── PROJECTS ────────────────────────────── */
     .section-title { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 1.5rem; }
-    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
     .section-head .section-title { margin-bottom: 0; }
     .section-count { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
-    .proj-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .proj-list { display: flex; flex-direction: column; gap: var(--space-gap); }
     .proj-list:not(.show-all) .proj-extra { display: none; }
-    .proj-more { display: flex; justify-content: center; margin-top: 1.5rem; }
+    .proj-more { display: flex; justify-content: center; margin-top: var(--space-gap); }
     .proj {
       background: var(--card);
       border: 1px solid var(--card-border);
@@ -280,7 +285,7 @@
     .proj:hover { border-color: var(--accent-border); box-shadow: 0 18px 34px rgba(0,0,0,0.25); }
     .proj:hover .laptop-wrap { transform: translateY(-4px); }
     .proj:hover .phone { transform: translateY(-7px); }
-    .proj-body { padding: 1.75rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .proj-body { padding: var(--space-pad); display: flex; flex-direction: column; gap: 0.95rem; }
     .proj-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
     .proj-body p { font-size: 0.85rem; color: var(--muted); }
     .proj-body .proj-meta { font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text); opacity: 0.7; margin-top: -0.45rem; }
@@ -361,7 +366,7 @@
 
     /* ── GITHUB CONTRIBUTIONS ─────────────────── */
     .ghchart-box {
-      border: 1px solid var(--card-border); padding: 1.25rem;
+      border: 1px solid var(--card-border); padding: 1.75rem;
       --gh-0: rgba(34,197,94,0.08); --gh-1: rgba(34,197,94,0.35); --gh-2: rgba(34,197,94,0.6);
       --gh-3: rgba(34,197,94,0.85); --gh-4: #22c55e;
     }
@@ -390,14 +395,14 @@
     .gh-stat-label { font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
     .ghchart-foot {
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       font-size: 0.72rem; color: var(--muted);
     }
     .ghchart-legend { display: flex; align-items: center; gap: 0.4rem; }
     .ghchart-legend .sw { width: 11px; height: 11px; display: inline-block; }
 
     /* ── FOOTER GRID (certs / socials / contact) */
-    .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 1.5rem; }
+    .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: var(--space-gap); }
     .cert-scroll {
       max-height: 230px;
       overflow-y: auto;
@@ -430,7 +435,7 @@
 
     footer.site-footer {
       text-align: center;
-      padding: 2.5rem 1rem;
+      padding: 4rem 1rem 3rem;
       font-size: 0.75rem;
       color: var(--muted);
     }
@@ -473,6 +478,8 @@
       .hero-actions { justify-content: center; }
       .top-label { font-size: 0.6rem; }
       .top-label .line, .divider .line { max-width: 40px; }
+      :root { --space-gap: 1.5rem; --space-pad: 1.5rem; --space-section: 3rem; }
+      .ghchart-box { padding: 1.25rem; }
     }
   </style>
 </head>
@@ -517,18 +524,23 @@
             <div class="tl">
               <div class="tl-row">
                 <span class="dot dot-active"></span>
-                <h3>BS Information Technology — 4th Year <span class="status">Current</span></h3>
-                <p>De La Salle Lipa</p>
+                <h3>Founder &amp; Full-Stack Developer <span class="status">Current</span></h3>
+                <p><a href="https://devasq.site/" target="_blank">DevA²</a> — Aug 2026 – Present</p>
               </div>
               <div class="tl-row">
-                <span class="dot"></span>
-                <h3>OJT / Internship <span class="status">Ongoing</span></h3>
-                <p>Actively seeking</p>
+                <span class="dot dot-done"></span>
+                <h3>Public Officer <span class="status">Completed</span></h3>
+                <p>Junior Philippine Computer Society (JPCS) — A.Y. 2024–2025</p>
               </div>
               <div class="tl-row">
-                <span class="dot"></span>
+                <span class="dot dot-done"></span>
                 <h3>International Education Tour Delegate <span class="status">Completed</span></h3>
                 <p>Universiti Teknologi PETRONAS, Malaysia — Apr 2026</p>
+              </div>
+              <div class="tl-row">
+                <span class="dot"></span>
+                <h3>OJT / Internship <span class="status">Seeking</span></h3>
+                <p>486-hour software development or full-stack OJT — starting Dec 2026</p>
               </div>
             </div>
           </div>
@@ -538,8 +550,8 @@
             <div class="tl">
               <div class="tl-row">
                 <span class="dot dot-active"></span>
-                <h3>BS Information Technology</h3>
-                <p>De La Salle Lipa, Lipa City, Batangas — Aug 2023 – Present</p>
+                <h3>BS Information Technology — 4th Year <span class="status">Current</span></h3>
+                <p>Major in System Development · De La Salle Lipa, Lipa City, Batangas — Aug 2023 – Present</p>
               </div>
             </div>
           </div>
@@ -549,7 +561,7 @@
 
           <div class="panel about reveal">
             <div class="panel-head"><h2>About</h2></div>
-            <p>I'm a full-stack developer and a 4th-year BS Information Technology student, majoring in System Development, at De La Salle Lipa. My strength is the backend: secure authentication, real-time data, and role-based access control built to hold up in production.</p>
+            <p>I'm a full-stack developer and a 4th-year BS Information Technology student, majoring in System Development, at De La Salle Lipa. I work across the entire stack, from clean, responsive interfaces and mobile apps to secure APIs, real-time data, and deployment, building complete systems that hold up in production.</p>
             <p>I founded DevA², a two-person development studio that designs, builds, and maintains live web and mobile systems. Across studio, capstone, and personal work, I've built ten projects, ranging from storefronts and admin portals to a real-time ward communication system.</p>
             <p>I'm currently seeking a 486-hour software development or full-stack OJT starting December 2026, where I can contribute to production work while deepening my expertise in system design and cloud infrastructure.</p>
           </div>
@@ -1090,7 +1102,7 @@
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
     /* ── Hero role typewriter ─────── */
-    const roles = ['FULL-STACK DEVELOPER', 'BACKEND-LEANING ENGINEER', 'PROBLEM SOLVER', 'BS IT STUDENT @ DLSL'];
+    const roles = ['SOFTWARE DEVELOPER', 'FULL-STACK DEVELOPER', 'WEB & MOBILE DEVELOPER', 'FOUNDER @ DEVA²', 'PROBLEM SOLVER', 'BS IT STUDENT @ DLSL'];
     const roleTextEl = document.getElementById('role-text');
     let ri = 0, ci = 0, deleting = false;
     function tickRole() {
