@@ -151,6 +151,14 @@
       margin-bottom: 1.6rem;
     }
     .hero-location i { color: var(--accent); margin-right: 0.4rem; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      font-size: 0.75rem; font-weight: 600; color: var(--accent);
+      padding: 0.35rem 0.8rem; margin-bottom: 1rem;
+      border: 1px solid var(--accent-border); background: var(--accent-dim); border-radius: 999px;
+    }
+    .hero-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: dot-pulse 2s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { .hero-badge-dot, .dot-active { animation: none; } }
     .hero-actions { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
     .btn {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -279,6 +287,18 @@
     .proj-list { display: flex; flex-direction: column; gap: var(--space-gap); }
     .proj-list:not(.show-all) .proj-extra { display: none; }
     .proj-more { display: flex; justify-content: center; margin-top: var(--space-gap); }
+    .proj-more[hidden] { display: none; }
+    #projects { scroll-margin-top: 1.5rem; }
+    /* tech tag filter: while filtering, show only matching cards (beats the show-all rule above) */
+    .proj-list.filtering .proj { display: none; }
+    .proj-list.filtering .proj.match { display: grid; }
+    .proj-filter { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1rem; margin: -1rem 0 1.5rem; font-size: 0.8rem; color: var(--muted); }
+    .proj-filter strong { color: var(--accent); }
+    .proj-filter-clear { font: inherit; font-size: 0.75rem; font-weight: 600; color: var(--accent); background: none; border: 1px solid var(--accent-border); padding: 0.25rem 0.7rem; cursor: pointer; }
+    .proj-filter-clear:hover { background: var(--accent-dim); }
+    .tag.is-filterable { cursor: pointer; }
+    .tag.is-filterable:focus-visible, .proj-filter-clear:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .tag.is-active { background: var(--accent); border-color: var(--accent); color: var(--bg); }
     .proj {
       background: var(--card);
       border: 1px solid var(--card-border);
@@ -292,6 +312,8 @@
     .proj-body { padding: var(--space-pad); display: flex; flex-direction: column; gap: 0.95rem; }
     .proj-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
     .proj-body p { font-size: 0.85rem; color: var(--muted); }
+    .proj-body .proj-impact { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-top: -0.3rem; }
+    .proj-body .proj-impact i { margin-right: 0.45rem; }
     .proj-body .proj-meta { font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text); opacity: 0.7; margin-top: -0.45rem; }
     .proj-links { display: flex; gap: 0.5rem; align-items: center; font-size: 0.8rem; font-weight: 600; margin-top: auto; flex-wrap: wrap; }
     .proj-links span { color: var(--muted); }
@@ -315,12 +337,16 @@
       box-shadow: 0 2px 0 rgba(255,255,255,0.04) inset, 0 20px 36px rgba(0,0,0,0.4);
     }
     .laptop-screen {
+      position: relative;
       width: 100%; aspect-ratio: 16 / 10.5;
       overflow: hidden;
       border-radius: 6px;
       background: #000;
     }
     .laptop-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    /* hover preview clip fades in over the screenshot */
+    .laptop-screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; transition: opacity 0.35s ease; }
+    .laptop-screen video.is-playing { opacity: 1; }
     .laptop-base {
       position: relative;
       width: 128%;
@@ -500,6 +526,7 @@
       <div class="hero-grid">
         <img class="hero-photo" src="profile-photo.png" alt="Jhay-Vy R. Adajar">
         <div class="hero-info">
+          <p class="hero-badge"><span class="hero-badge-dot" aria-hidden="true"></span>Open for OJT from December 2026</p>
           <h1>Jhay-Vy R.<br>Adajar</h1>
           <p class="hero-role"><span id="role-text"></span><span class="cursor-bar"></span></p>
           <p class="hero-location"><i class="fas fa-location-dot"></i>Lipa City, Batangas, Philippines</p>
@@ -629,13 +656,17 @@
         <h2 class="section-title">Featured Projects</h2>
         <span class="section-count">11 PROJECTS · 6 CLIENT BUILDS</span>
       </div>
+      <div class="proj-filter" aria-live="polite">
+        <span id="proj-filter-text">Click any tech tag to see every project built with it.</span>
+        <button type="button" id="proj-filter-clear" class="proj-filter-clear" hidden>Clear filter ×</button>
+      </div>
       <div class="proj-list" id="proj-list">
 
         <article class="proj reveal">
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-shopaholichs.png" alt="Shopaholichs on desktop"></div>
+                <div class="laptop-screen" data-preview="project-shopaholichs-preview.mp4"><img src="project-shopaholichs.png" alt="Shopaholichs on desktop"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -647,6 +678,7 @@
           <div class="proj-body">
             <h3>Shopaholichs</h3>
             <p class="proj-meta">Client project</p>
+            <p class="proj-impact"><i class="fas fa-users" aria-hidden="true"></i>2,000+ students served</p>
             <p>A modular campus merchandise storefront and companion admin portal. Role-based access control, QR-verified order pickups, Cloudinary-powered media, and sign-in limited to university accounts, with automated Firebase emulator unit tests.</p>
             <div class="tags">
               <span class="tag">JavaScript (ESM)</span><span class="tag">Vite</span><span class="tag">Firebase</span><span class="tag">Tailwind CSS</span>
@@ -663,7 +695,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-devasq-nfc.webp" alt="DevA² Smart NFC Cards on desktop" loading="lazy"></div>
+                <div class="laptop-screen" data-preview="project-devasq-nfc-preview.mp4"><img src="project-devasq-nfc.webp" alt="DevA² Smart NFC Cards on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -675,6 +707,7 @@
           <div class="proj-body">
             <h3>DevA² Smart NFC Cards</h3>
             <p class="proj-meta">Studio product · DevA²</p>
+            <p class="proj-impact"><i class="fas fa-id-card" aria-hidden="true"></i>500+ cards issued</p>
             <p>Turns physical NFC cards into live, editable profiles with QR fallback, one-tap vCard save, and scan analytics by day and device. An admin console batch-generates up to 1,000 cards, writes them to tags with Web NFC, and exports QR codes as a ZIP — secured with bcrypt, signed sessions, and Cloudflare Turnstile.</p>
             <div class="tags">
               <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Firebase</span><span class="tag">Tailwind CSS</span><span class="tag">Vercel</span>
@@ -691,7 +724,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-palengkehub.png" alt="PalengkeHub on desktop"></div>
+                <div class="laptop-screen" data-preview="project-palengkehub-preview.mp4"><img src="project-palengkehub.png" alt="PalengkeHub on desktop"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -703,6 +736,7 @@
           <div class="proj-body">
             <h3>PalengkeHub</h3>
             <p class="proj-meta">Capstone · Project Manager &amp; Full-Stack Developer</p>
+            <p class="proj-impact"><i class="fas fa-user-check" aria-hidden="true"></i>200+ users</p>
             <p>Online ordering for the Lipa City Public Market: an Android app and a React admin dashboard with per-kilo price comparison across stalls, a multi-stall cart, GCash checkout, and scheduled pickup at the vendor's stall. Led the 4-person team and designed the Supabase schema for prices, inventories, and orders.</p>
             <div class="tags">
               <span class="tag">React Native</span><span class="tag">Expo</span><span class="tag">React</span><span class="tag">Supabase</span><span class="tag">Cloudflare</span>
@@ -749,7 +783,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-yamato.webp" alt="Yamato Cafe homepage on desktop" loading="lazy"></div>
+                <div class="laptop-screen" data-preview="project-yamato-preview.mp4"><img src="project-yamato.webp" alt="Yamato Cafe homepage on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -775,7 +809,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-yslapb.webp" alt="YslaPB on desktop" loading="lazy"></div>
+                <div class="laptop-screen" data-preview="project-yslapb-preview.mp4"><img src="project-yslapb.webp" alt="YslaPB on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -787,6 +821,7 @@
           <div class="proj-body">
             <h3>YslaPB</h3>
             <p class="proj-meta">Personal project</p>
+            <p class="proj-impact"><i class="fas fa-user-group" aria-hidden="true"></i>100+ users</p>
             <p>A Korean-style photo booth in the browser with 15 live filters, 60 frames, and 113 stickers. Up to 6 friends on separate phones shoot one strip together in real time through Firestore transactions, and MediaPipe swaps backgrounds without uploading a single photo. Exports to PNG, GIF, Instagram Story, and print.</p>
             <div class="tags">
               <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Firebase</span><span class="tag">MediaPipe</span><span class="tag">Cloudinary</span>
@@ -801,7 +836,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-thelathe.webp" alt="The LATHE on desktop" loading="lazy"></div>
+                <div class="laptop-screen" data-preview="project-thelathe-preview.mp4"><img src="project-thelathe.webp" alt="The LATHE on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -831,7 +866,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-sipsavor.png" alt="Sip & Savor Spot on desktop" loading="lazy"></div>
+                <div class="laptop-screen" data-preview="project-sipsavor-preview.mp4"><img src="project-sipsavor.png" alt="Sip & Savor Spot on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -885,7 +920,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-nursereset.webp" alt="NurseReset on desktop" loading="lazy"></div>
+                <div class="laptop-screen" data-preview="project-nursereset-preview.mp4"><img src="project-nursereset.webp" alt="NurseReset on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -911,7 +946,7 @@
           <div class="device-mockup">
             <div class="laptop-wrap">
               <div class="laptop">
-                <div class="laptop-screen"><img src="project-tutoring.webp" alt="Peer Tutoring Booking Platform on desktop" loading="lazy"></div>
+                <div class="laptop-screen" data-preview="project-tutoring-preview.mp4"><img src="project-tutoring.webp" alt="Peer Tutoring Booking Platform on desktop" loading="lazy"></div>
               </div>
               <div class="laptop-base"><span class="laptop-dots"><span></span><span></span><span></span></span></div>
             </div>
@@ -955,10 +990,10 @@
               <div class="gh-grid" id="gh-grid" role="img" aria-label="GitHub contributions since August 2026"></div>
             </div>
             <div class="gh-stats" id="gh-stats">
-              <div class="gh-stat"><span class="gh-stat-num" id="gh-count">0</span><span class="gh-stat-label">Contributions</span></div>
-              <div class="gh-stat"><span class="gh-stat-num" id="gh-active">0</span><span class="gh-stat-label">Active days</span></div>
-              <div class="gh-stat"><span class="gh-stat-num" id="gh-best">0</span><span class="gh-stat-label" id="gh-best-label">Best day</span></div>
-              <div class="gh-stat"><span class="gh-stat-num"><span id="gh-streak">0</span><span class="gh-unit"> days</span></span><span class="gh-stat-label">Longest streak</span></div>
+              <div class="gh-stat"><span class="gh-stat-num" id="gh-count">—</span><span class="gh-stat-label">Contributions</span></div>
+              <div class="gh-stat"><span class="gh-stat-num" id="gh-active">—</span><span class="gh-stat-label">Active days</span></div>
+              <div class="gh-stat"><span class="gh-stat-num" id="gh-best">—</span><span class="gh-stat-label" id="gh-best-label">Best day</span></div>
+              <div class="gh-stat"><span class="gh-stat-num"><span id="gh-streak">—</span><span class="gh-unit"> days</span></span><span class="gh-stat-label">Longest streak</span></div>
             </div>
           </div>
           <div class="ghchart-foot">
@@ -1284,6 +1319,76 @@
         // When collapsing, bring the section back into view so the reader isn't left far below it
         if (!expanded) document.getElementById('projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
+    }
+
+    /* ── Hover video previews on project laptops ── */
+    // Only for real hover pointers (phones keep screenshots, saving data) and not for reduced-motion users
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.proj').forEach(card => {
+        const screen = card.querySelector('.laptop-screen[data-preview]');
+        if (!screen) return;
+        let video = null;
+        const start = () => {
+          if (!video) { // created on first hover so clips only download when wanted
+            video = document.createElement('video');
+            video.muted = true; video.loop = true; video.playsInline = true; video.preload = 'auto';
+            video.setAttribute('aria-hidden', 'true');
+            video.src = screen.dataset.preview;
+            video.addEventListener('playing', () => video.classList.add('is-playing'));
+            screen.appendChild(video);
+          }
+          video.play().catch(() => {}); // blocked or missing clip: the screenshot simply stays
+        };
+        const stop = () => { if (!video) return; video.pause(); video.classList.remove('is-playing'); video.currentTime = 0; };
+        card.addEventListener('mouseenter', start);
+        card.addEventListener('mouseleave', stop);
+        card.addEventListener('focusin', start);
+        card.addEventListener('focusout', e => { if (!card.contains(e.relatedTarget)) stop(); });
+      });
+    }
+
+    /* ── Filter projects by tech tag ── */
+    if (projList) {
+      // "Express.js" = "Express", "JavaScript (ESM)" = "JavaScript"
+      const norm = t => t.toLowerCase().replace(/\(.*?\)/g, '').replace(/\.js\b/g, '').trim();
+      const cards = [...projList.querySelectorAll('.proj')];
+      const techsOf = new Map(cards.map(c => [c, new Set([...c.querySelectorAll('.tag')].map(t => norm(t.textContent)))]));
+      const filterText = document.getElementById('proj-filter-text');
+      const clearBtn = document.getElementById('proj-filter-clear');
+      const moreWrap = document.querySelector('.proj-more');
+      const hint = filterText.textContent;
+      let active = null;
+
+      function applyFilter(tech, label) {
+        active = tech;
+        projList.classList.toggle('filtering', !!tech);
+        let n = 0;
+        cards.forEach(c => { const m = !!tech && techsOf.get(c).has(tech); c.classList.toggle('match', m); if (m) n++; });
+        document.querySelectorAll('.tag.is-filterable').forEach(t => t.classList.toggle('is-active', !!tech && norm(t.textContent) === tech));
+        moreWrap.hidden = !!tech;
+        clearBtn.hidden = !tech;
+        if (!tech) { filterText.textContent = hint; return; }
+        const count = document.createElement('strong'); count.textContent = n;
+        const name = document.createElement('strong'); name.textContent = label;
+        filterText.replaceChildren(count, ` project${n === 1 ? '' : 's'} built with `, name);
+      }
+
+      document.querySelectorAll('.tag').forEach(tag => {
+        const tech = norm(tag.textContent);
+        if (![...techsOf.values()].some(s => s.has(tech))) return; // no project uses it: keep it a plain label
+        tag.classList.add('is-filterable');
+        tag.setAttribute('role', 'button');
+        tag.tabIndex = 0;
+        tag.title = `Show projects built with ${tag.textContent}`;
+        const go = () => {
+          const same = active === tech;
+          applyFilter(same ? null : tech, tag.textContent);
+          if (!same) document.getElementById('projects').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+        tag.addEventListener('click', go);
+        tag.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+      });
+      clearBtn.addEventListener('click', () => applyFilter(null));
     }
 
     /* ── Scroll to top ─────────────── */
